@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import {config} from "dotenv";
 import {validateErrorsMidleware} from "../middleware/validateErrorsMidleware.js";
 import {sendError} from "../utils/error.js";
+import {idValidator} from "../utils/validators.js"
 import User from "../models/User.js";
 
 config();

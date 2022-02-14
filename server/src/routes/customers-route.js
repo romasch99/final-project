@@ -3,6 +3,7 @@ import {Router} from "express";
 import { body, param, query } from "express-validator";
 import {validateErrorsMidleware} from "../middleware/validateErrorsMidleware.js";
 import {sendError} from "../utils/error.js";
+import {idValidator} from "../utils/validators.js"
 import Customer from "../models/Customer.js"
 
 const router = Router();
