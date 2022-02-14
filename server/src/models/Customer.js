@@ -1,7 +1,7 @@
 import {tableCustomers} from "../database/create-tables.js";
 
 export default class Customer {
-    constructor({id, name, su}){
+    constructor({id, name, surname, email, age}){
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -15,6 +15,10 @@ export default class Customer {
             const query = `
                 SELECT id, name, surname, email, age FROM ${tableCustomers};
             `;
+            const [data] = await connection.query(query, [id]);
+            console.log(data);    
+            return data;
+            
         } catch (error) {
             console.log("Couldn't get all customers", error);
             throw error;
@@ -25,6 +29,8 @@ export default class Customer {
         try {
             const query = `INSERT INTO ${tableCustomers} (name, surname, email, age) VALUES (?, ?, ?, ?);`; 
             const [{insertId}] = await connection.query(query, [name, surname, email, age]);
+            
+            return new Customer({id: insertId, name, surname, email, age});
         } catch (error) {
             console.log("Couldn't create customer", error);
             throw error;
