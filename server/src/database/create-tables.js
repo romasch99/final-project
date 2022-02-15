@@ -7,7 +7,7 @@ const sqlCreateTableUsers =`
         name varchar(128) COLLATE utf8_unicode_ci NOT NULL,
         surname varchar(128) COLLATE utf8_unicode_ci NOT NULL,
         email varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-        password varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+        password varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
         deleted timestamp NULL DEFAULT NULL,
         PRIMARY KEY (id),
         UNIQUE KEY email_UNIQUE (email)

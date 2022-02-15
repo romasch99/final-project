@@ -1,15 +1,20 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import {config} from "dotenv";
 import {createTables} from "./database/create-tables.js";
 import {getConnection} from "./database/mysql.js";
 import customersRoute from "./routes/customers-route.js";
 import usersRoute from "./routes/users-route.js";
 
+config();
+
 const main = async () => {
   try {
 
       const PORT = process.env.PORT || 3000;
+      
+      console.log({PORT})
       
       const app = express();
       app.use(express.json());

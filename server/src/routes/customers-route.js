@@ -1,5 +1,5 @@
 import {Router} from "express";
-// import {isLoggedIn} from "../middleware/isLoggedIn.js"
+import {isLoggedIn} from "../middleware/isLoggedIn.js"
 import { body, param, query } from "express-validator";
 import {validateErrorsMidleware} from "../middleware/validateErrorsMidleware.js";
 import {sendError} from "../utils/error.js";
@@ -9,13 +9,13 @@ import Customer from "../models/Customer.js"
 const router = Router();
 
 router.get("/", 
-    // isLoggedIn,
+    isLoggedIn,
     validateErrorsMidleware,        
     async (req, res) => {
         const { connection } = req.app;
         
         try {
-            const customers = await Customer.all(connection, id);
+            const customers = await Customer.all(connection);
             
             res.status(200).send(customers);
             
@@ -27,7 +27,7 @@ router.get("/",
 );
 
 router.post("/", 
-    // isLoggedIn,
+    isLoggedIn,
     body(["name", "surname", "email", "age"], "Missing param").exists().notEmpty(),
     body(["name", "surname"]).isString(),
     body(["email"]).isEmail(),
@@ -48,7 +48,7 @@ router.post("/",
     });
 
     router.put("/id/:id", 
-    // isLoggedIn,
+    isLoggedIn,
     param("id").custom(idValidator).notEmpty(),
     body(["name", "surname", "email", "age"], "Missing param").exists().notEmpty(),
     body(["name", "surname"]).isString(),
@@ -77,7 +77,7 @@ router.post("/",
     });
     
 router.delete("/id/:id", 
-// isLoggedIn,
+isLoggedIn,
 param("id").custom(idValidator).notEmpty(),
 validateErrorsMidleware,   
 async (req, res) => {
@@ -93,7 +93,7 @@ async (req, res) => {
             });
         }
 
-        res.status(200).send({...req.body, id: id});
+        res.status(200).send({deleted: {id: id}});
         
     } catch (error) {
         sendError(error, res);

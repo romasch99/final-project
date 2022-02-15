@@ -1,5 +1,5 @@
 import {Router} from "express";
-// import {isLoggedIn} from "../middleware/isLoggedIn.js"
+import {isLoggedIn} from "../middleware/isLoggedIn.js"
 import { body, param, query } from "express-validator";
 import {hash, compare} from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -19,7 +19,7 @@ router.get("/",
         const { connection } = req.app;
         
         try {
-            const users = await User.allByQuestionId(connection, id);
+            const users = await User.all(connection);
             
             res.status(200).send(users);
             
@@ -55,10 +55,11 @@ router.post("/login",
     body(["email"]).isEmail(),
     validateErrorsMidleware,
     async (req, res) => {
+        const { connection } = req.app;
         const {email, password} = req.body;
     
         try {
-            const user = await User.oneByEmail(email);
+            const user = await User.oneByEmail(connection, email);
                 
             if (!user) {
                 return res.status(403).send({
@@ -85,7 +86,7 @@ router.post("/login",
     });
     
 router.put("/id/:id", 
-    // isLoggedIn,
+    isLoggedIn,
     param("id").custom(idValidator).notEmpty(),
     body(["name", "surname", "email", "password"], "Missing param").exists().notEmpty(),
     body(["name", "surname"]).isString(),
@@ -114,7 +115,7 @@ router.put("/id/:id",
     });
  
 router.delete("/id/:id", 
-// isLoggedIn,
+    isLoggedIn,
     param("id").custom(idValidator).notEmpty(),
     validateErrorsMidleware,   
     async (req, res) => {
@@ -130,7 +131,7 @@ router.delete("/id/:id",
             });
         }
 
-        res.status(200).send({...req.body, id: id});
+        res.status(200).send({deleted: {id: id}});
         
     } catch (error) {
         sendError(error, res);

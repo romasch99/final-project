@@ -15,7 +15,7 @@ export default class Customer {
             const query = `
                 SELECT id, name, surname, email, age FROM ${tableCustomers};
             `;
-            const [data] = await connection.query(query, [id]);
+            const [data] = await connection.query(query);
             console.log(data);    
             return data;
             

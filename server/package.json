@@ -1,5 +1,5 @@
 {
-  "name": "team-2-project",
+  "name": "final-project",
   "version": "1.0.0",
   "description": "",
   "type": "module",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/levandovsky/team-2-project.git"
+    "url": "https://github.com/romasch99/final-project.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/levandovsky/team-2-project/issues"
+    "url": "https://github.com/romasch99/final-project.git"
   },
-  "homepage": "https://github.com/levandovsky/team-2-project#readme",
+  "homepage": "https://github.com/romasch99/final-project.git#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",

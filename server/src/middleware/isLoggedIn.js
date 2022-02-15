@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { send } from "process";
 dotenv.config();
 
 export const isLoggedIn = (req, res, next) => {
@@ -7,7 +8,8 @@ export const isLoggedIn = (req, res, next) => {
     const {TOKEN_SECRET} = process.env;
 
     if (!authorization) {
-        return res.sendStatus(403);
+        console.log("No autorization")
+        return res.status(403).send({error: "No autorization"});
     }
 
     const [, token] = authorization.split(" ");

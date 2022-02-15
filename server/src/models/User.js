@@ -15,7 +15,7 @@ export default class User {
             const query = `
                 SELECT id, name, surname, email FROM ${tableUsers} WHERE deleted IS NULL;
             `;
-            const [data] = await connection.query(query, [id]);
+            const [data] = await connection.query(query);
             console.log(data);    
             return data;
             
@@ -27,7 +27,7 @@ export default class User {
     
     static async oneByEmail(connection, email) {
         try {
-            const query = "SELECT * FROM ${tableUsers} WHERE email = ?";
+            const query = `SELECT * FROM ${tableUsers} WHERE email = ?`;
             const [data] = await connection.query(query, [email]);
             const [user] = data;
 
