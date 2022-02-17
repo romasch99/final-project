@@ -77,7 +77,7 @@ router.post("/login",
     
             console.log(user);
     
-            const token = jwt.sign({user_id: user.id}, process.env.TOKEN_SECRET);
+            const token = jwt.sign({id: user.id, email: user.email}, process.env.TOKEN_SECRET);
     
             res.status(200).send({token,});
         } catch (error) {
