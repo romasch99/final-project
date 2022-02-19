@@ -2,7 +2,7 @@ const AUTH_URL = `${process.env.REACT_APP_BASE_URL}/users`;
 
 export class Auth {
     static async register(name, surname, email, password) {
-        const res = await fetch(`${AUTH_URL}/register`, {
+        const res = await fetch(`${AUTH_URL}/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

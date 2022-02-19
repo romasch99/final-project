@@ -18,8 +18,8 @@ export const Customer = ({customer, onEdit, onDelete}) => {
                 <CardNote>Age: {customer.age}</CardNote>
             </CardContent>
             <CardButtons>
-                <CardButton onClick={onEdit}>Edit</CardButton>
-                <CardButton onClick={onDelete}>Edit</CardButton>
+                <CardButton inputColor = "#138d83d7" onClick={onEdit}>Edit</CardButton>
+                <CardButton onClick={onDelete}>Delete</CardButton>
             </CardButtons>
         </Card>
     );

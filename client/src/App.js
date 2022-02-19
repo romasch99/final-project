@@ -1,24 +1,48 @@
-import logo from './logo.svg';
 import './App.css';
+import {Route, Routes, Navigate, useNavigate} from "react-router-dom";
+import {Login} from "./pages/Login"
+import {Register} from "./pages/Register"
+import {Home} from "./pages/Home"
+import {EditCustomer} from "./pages/EditCustomer"
+import {Navbar} from "./ui/molecules/Nav"
+import {AuthProvider} from "./components/AuthProvider";
+import {RequireAuth} from "./components/RequireAuth";   
 
 function App() {
+  const navigate = useNavigate();
+  
+  const goLogin = () => {
+    navigate(`/login`);
+  };
+  
+  const goRegister = () => {
+    navigate(`/register`);
+  };
+  
+  
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Navbar goLogin={() => goLogin()} goRegister={() => goRegister()} />
+      <Routes>
+        <Route>
+          <Route path="/" 
+            element={
+              <RequireAuth><Home /></RequireAuth>
+            } 
+          />
+          <Route path="/edit-customer/:id" 
+            element={
+              <RequireAuth><EditCustomer /></RequireAuth>
+            } 
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<Navigate to="/404" />} />
+        </Route>  
+      </Routes>  
+    </AuthProvider>  
+
   );
 }
 

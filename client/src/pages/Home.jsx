@@ -1,20 +1,20 @@
 import {useState, useEffect} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useAuth} from "../hooks/useAuth";
-import {Customer} from "../components/customer";
+import {Customer} from "../components/Customer";
 import {CustomerApi} from "../services/customers-api";
 import {BlockFlex} from "../ui/atoms/Block"
-import {Field} from "../ui/molecules/Field";
+import {CustomerForm} from "../components/CustomerForm";
 import {Card, CardHeader, CardContent, CardButton, CardItemSmall} from "../ui/atoms/CardElements"
 
 export const Home = () => {
     const {token} = useAuth();
     const navigate = useNavigate();
     const [customers, setCustomers] = useState();
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [email, setEmail] = useState("");
-    const [age, setAge] = useState(0);
+    const customModel = {name: "", surname: "", email: "", age: 0} 
+    const [model, setModel] = useState(customModel);
+    const onModelUpdate = (update) => setModel(update);
+    
     const [error, setError] = useState(null);
  
     const {state} = useLocation();
@@ -28,15 +28,19 @@ export const Home = () => {
         setCustomers((prevState) => [...prevState, customer]);
     };
     
+    const editCustomer = (customer) => {
+        navigate(`/edit-customer/${customer.id}`, {state: customer});
+    }
+    
     const deleteCustomer = async (customId) => {
         try {
-            const res = await CustomerApi.delete(customId);
+            const res = await CustomerApi.delete(customId, token);
             const {id} = res.deleted;
             
             setCustomers((prevState) => {
-                console.log("deleteCustomer");
-                console.log({state});
-                console.log({prevState});
+                // console.log("deleteCustomer");
+                // console.log({state});
+                // console.log({prevState});
           
                 return prevState.filter((customer) => customer.id !== id);
             });
@@ -45,43 +49,34 @@ export const Home = () => {
         }
     };
 
-    
-    const onNameChange = (e) => {
-        setName(e.target.value);
-    };
-    const onSurnameChange = (e) => {
-        setSurname(e.target.value);
-    };
-    const onEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
-    const onAgeChange = (e) => {
-        setAge(e.target.value);
-    };
-    
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        console.log('Register');
-        console.log(name, surname, email, age);
-        if (!email || !name || !surname || !age) return;
+        console.log('Add customer');
+        console.log(model.name, model.surname, model.email, model.age);
+        // if (!model.email || !model.name || !model.surname || !model.age) return;
 
-        const res = await CustomerApi.add({name, surname, email, age}, token);
+        const res = await CustomerApi.add(model, token);
+        console.log('Add res:');
         console.log(res);
-        console.log('Error: ' + res.err);
-        if (res.err) {
-            setError(res.err);
+        console.log('Error: ' + res.errors);
+        if (res.errors) {
+            setError(`${res.errors[0].msg}: ${res.errors[0].param}!`);
             return;
         }
         setError(null);
-        navigate("/", {state: {added: res}});
+        const {customer} = res;
+        console.log({customer});
+        navigate("/", {state: {added: customer}});
     };
     
     useEffect(() => {
         fetchCustomers();
-    }, []);
+    },[] );
     
     useEffect(() => {
+        console.log('useEffect state:');
+        console.log({state});
         if (!state) return;
 
         if (state.added) {
@@ -90,7 +85,7 @@ export const Home = () => {
     }, [state]);
     
     const renderedCustomers = !!customers
-    ? customers.map((customer) => <Customer key={customer.id} customer={customer}  onDelete={() => {deleteCustomer(customer.id)}}/>)
+    ? customers.map((customer) => <Customer key={customer.id} customer={customer} onEdit = {() => {editCustomer(customer)}} onDelete={() => {deleteCustomer(customer.id)}}/>)
     : null;
     
     const customersList = customers === null ? (
@@ -98,7 +93,7 @@ export const Home = () => {
     ) : (
         <div className="list">
             <CardHeader>
-                <div>customers List</div>
+                <div>Customers List</div>
             </CardHeader>
                 <BlockFlex>{renderedCustomers}</BlockFlex>
         </div>
@@ -108,26 +103,13 @@ export const Home = () => {
         <Card width = "80%">
             <CardHeader>Add</CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit}>
-                    <CardItemSmall>
-                        <Field label= "Name:" onChange={onNameChange} name="name" type="text" placeholder="Jon" required />
-                    </CardItemSmall>    
-                    <CardItemSmall>
-                        <Field label= "Surname:" onChange={onSurnameChange} name="surname" type="text" placeholder="Smith" required />
-                    </CardItemSmall>    
-                    <CardItemSmall>
-                        <Field label= "Email:" onChange={onEmailChange} name="email" type="email" placeholder="email@email.com" required />
-                    </CardItemSmall>    
-                    <CardItemSmall>
-                        <Field label= "Age:" onChange={onAgeChange} name="age" type="number" placeholder="123..." required minLength={8} />
-                    </CardItemSmall>
-                    <CardItemSmall>
-                        <CardButton  inputColor = {!email || !name || !surname || !age ? "#ebedef" : "#138d83d7"} inputWidht = "10%" type="submit" disabled={!email || !name || !surname || !age}>Register</CardButton>
+                <CustomerForm customer={customModel} onUpdate={onModelUpdate}></CustomerForm>
+                <CardItemSmall>
+                    <CardButton inputColor = {!model.email || !model.name || !model.surname || model.age<1 ? "#ebedef" : "#138d83d7"} inputWidht = "10%" type="submit" onClick={handleSubmit} disabled={!model.email || !model.name || !model.surname || model.age<1} >Add</CardButton>
                     </CardItemSmall>
                     <CardItemSmall> 
                         <p style={{color: "red"}}>{error}</p>
                     </CardItemSmall>
-                </form>
             </CardContent>
             {customersList}
         </Card>

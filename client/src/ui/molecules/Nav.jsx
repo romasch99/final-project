@@ -16,7 +16,7 @@ export const Navbar = ({goLogin, goRegister}) => {
     const skillMenu = auth.token ? ( 
         <NavMenu>
             <NavLink to='/' >
-                Skills
+                Customers
             </NavLink>
             <NavLink to='/add' >
                 Add skill
