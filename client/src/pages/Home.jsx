@@ -105,7 +105,7 @@ export const Home = () => {
             <CardContent>
                 <CustomerForm customer={customModel} onUpdate={onModelUpdate}></CustomerForm>
                 <CardItemSmall>
-                    <CardButton inputColor = {!model.email || !model.name || !model.surname || model.age<1 ? "#ebedef" : "#138d83d7"} inputWidht = "10%" type="submit" onClick={handleSubmit} disabled={!model.email || !model.name || !model.surname || model.age<1} >Add</CardButton>
+                    <CardButton inputColor = {!model.email || !model.name || !model.surname || model.age<1 ? "#ebedef" : "#138d83d7"} inputWidht = "10%" type="submit" onClick={handleSubmit} disabled={!model.email || !model.name || !model.surname || model.age<1} inputMarginTop="0.5rem">Add</CardButton>
                     </CardItemSmall>
                     <CardItemSmall> 
                         <p style={{color: "red"}}>{error}</p>

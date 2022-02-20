@@ -36,16 +36,16 @@ export const CustomerForm = ({customer, onUpdate}) => {
             <CardContent>
                 <form>
                     <CardItemSmall>
-                        <Field label= "Name:" onChange={onNameChange} name="name" type="text" placeholder="Jon" value={name} required />
+                        <Field label= "Name:" onChange={onNameChange} name="name" type="text" placeholder="Jon" value={name} required fontSize="12px"/>
                     </CardItemSmall>    
                     <CardItemSmall>
-                        <Field label= "Surname:" onChange={onSurnameChange} name="surname" type="text" placeholder="Smith"  value={surname} required />
+                        <Field label= "Surname:" onChange={onSurnameChange} name="surname" type="text" placeholder="Smith"  value={surname} required  fontSize="12px"/>
                     </CardItemSmall>    
                     <CardItemSmall>
-                        <Field label= "Email:" onChange={onEmailChange} name="email" type="email" placeholder="email@email.com" value={email} required />
+                        <Field label= "Email:" onChange={onEmailChange} name="email" type="email" placeholder="email@email.com" value={email} required  fontSize="12px"/>
                     </CardItemSmall>    
                     <CardItemSmall>
-                        <Field label= "Age:" onChange={onAgeChange} name="age" type="number" placeholder="123..." value={age ? age :''} required minLength={8} />
+                        <Field label= "Age:" onChange={onAgeChange} name="age" type="number" placeholder="123..." value={age ? age :''} required minLength={8} fontSize="12px"/>
                     </CardItemSmall>
                 </form>
             </CardContent>

@@ -11,18 +11,19 @@ border-radius: 7px;
 `;
 
 export const CardItem = styled.div`
-  margin-bottom: 1rem;
-  padding-top: 1.2rem;
-  padding-bottom: 1.2rem;
+  margin-bottom: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 `;
 export const CardItemSmall = styled.div`
-  margin-bottom: 0.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.125rem;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  font-size: ${props => props.fontSize || `14px`};
 `;
 
 export const CardHeader = styled.h1`
-  font-size: 24px;
+  font-size: ${props => props.fontSize || `20px`};
   font-weight: bold;
   text-align: center;
 `;
@@ -48,6 +49,7 @@ export const CardButtons = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
+  padding-top: ${props => props.inputPaddingTop || `0.5rem`};
 `;
 
 export const CardButton = styled.button`
