@@ -1,12 +1,12 @@
 import {Router} from "express";
-import {isLoggedIn} from "../middleware/isLoggedIn.js"
+import {isLoggedIn} from "../middleware/isLoggedIn.js";
 import { body, param, query } from "express-validator";
 import {hash, compare} from "bcrypt";
 import jwt from "jsonwebtoken";
 import {config} from "dotenv";
 import {validateErrorsMidleware} from "../middleware/validateErrorsMidleware.js";
 import {sendError} from "../utils/error.js";
-import {idValidator} from "../utils/validators.js"
+import {idValidator} from "../utils/validators.js";
 import User from "../models/User.js";
 
 config();

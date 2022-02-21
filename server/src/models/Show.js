@@ -1,4 +1,4 @@
-import {tableShows} from "../database/create-tables.js"
+import {tableShows} from "../database/create-tables.js";
 
 export default class Show {
     constructor({id, title, description, show_date}){
@@ -12,7 +12,7 @@ export default class Show {
         try {
             
             const query = `
-                SELECT id, title, description, DATE_FORMAT(show_date, "%Y-%m-%d %H-%i") as date FROM ${tableShows}
+                SELECT id, title, description, DATE_FORMAT(show_date, "%Y-%m-%dT%H:%i") as date FROM ${tableShows}
             `;
             const [data] = await connection.query(query);
             console.log(data);    

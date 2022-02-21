@@ -16,6 +16,8 @@ export const Customer = ({customer, onEdit, onDelete}) => {
             <CardContent>
                 <CardNote>Email: {customer.email}</CardNote>
                 <CardNote>Age: {customer.age}</CardNote>
+                <CardNote>Show title: {customer.title}</CardNote>
+                <CardNote>Date: {customer.date}</CardNote>
             </CardContent>
             <CardButtons inputPaddingTop="1.5rem">
                 <CardButton inputColor = "#138d83d7" inputFontSize="12px" inputWidht= "22%" inputHeight="25px" onClick={onEdit}>Edit</CardButton>

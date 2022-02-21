@@ -18,8 +18,8 @@ export const Navbar = ({goLogin, goRegister}) => {
             <NavLink to='/' >
                 Customers
             </NavLink>
-            <NavLink to='/add' >
-                Add skill
+            <NavLink to='/shows' >
+                Shows
             </NavLink>
         </NavMenu>    
     ) : null;

@@ -1,20 +1,21 @@
 import {tableCustomers} from "../database/create-tables.js";
-import {tableShows} from "../database/create-tables.js"
+import {tableShows} from "../database/create-tables.js";
 
 export default class Customer {
-    constructor({id, name, surname, email, age}){
+    constructor({id, name, surname, email, age, show_id}){
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.age = age;
+        this.show_id = show_id;
     }
  
     static async all(connection) {
         try {
             
             const query = `
-                SELECT c.name, c.surname, c.email, c.age, s.description, DATE_FORMAT(s.show_date, "%Y-%m-%d %H-%i") as date FROM ${tableCustomers} c
+                SELECT c.id, c.name, c.surname, c.email, c.age, s.title, DATE_FORMAT(s.show_date, "%Y-%m-%d %H-%i") as date FROM ${tableCustomers} c
                 Left JOIN ${tableShows} s ON c.show_id = s.id;
             `;
             const [data] = await connection.query(query);
@@ -27,7 +28,26 @@ export default class Customer {
         }
     }
     
+    static async getById(connection, id) {
+        try {
+            
+            const query = `
+                SELECT c.id, c.name, c.surname, c.email, c.age, s.title, DATE_FORMAT(s.show_date, "%Y-%m-%d %H-%i") as date FROM ${tableCustomers} c
+                    Left JOIN ${tableShows} s ON c.show_id = s.id
+                WHERE c.id = ?;
+            `;
+            const [data] = await connection.query(query, [id]);
+            console.log(data);    
+            return data;
+            
+        } catch (error) {
+            console.log("Couldn't get all customers", error);
+            throw error;
+        }
+    }
+    
     static async create(connection, {name, surname, email, age, show_id}) {
+        console.log({show_id});   
         try {
             const query = `INSERT INTO ${tableCustomers} (name, surname, email, age, show_id) VALUES (?, ?, ?, ?, ?);`; 
             const [{insertId}] = await connection.query(query, [name, surname, email, age, show_id]);

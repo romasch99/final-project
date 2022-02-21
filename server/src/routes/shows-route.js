@@ -1,10 +1,10 @@
 import {Router} from "express";
-import {isLoggedIn} from "../middleware/isLoggedIn.js"
+import {isLoggedIn} from "../middleware/isLoggedIn.js";
 import { body, param, query } from "express-validator";
 import {validateErrorsMidleware} from "../middleware/validateErrorsMidleware.js";
 import {sendError} from "../utils/error.js";
-import {idValidator} from "../utils/validators.js"
-import Show from "../models/Show.js"
+import {idValidator} from "../utils/validators.js";
+import Show from "../models/Show.js";
 
 const router = Router();
     

@@ -1,4 +1,4 @@
-import {tableUsers} from "../database/create-tables.js"
+import {tableUsers} from "../database/create-tables.js";
 
 export default class User {
     constructor({id, name, surname, email, password}){

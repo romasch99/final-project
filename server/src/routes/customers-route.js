@@ -1,10 +1,10 @@
 import {Router} from "express";
-import {isLoggedIn} from "../middleware/isLoggedIn.js"
+import {isLoggedIn} from "../middleware/isLoggedIn.js";
 import { body, param, query } from "express-validator";
 import {validateErrorsMidleware} from "../middleware/validateErrorsMidleware.js";
 import {sendError} from "../utils/error.js";
-import {idValidator} from "../utils/validators.js"
-import Customer from "../models/Customer.js"
+import {idValidator} from "../utils/validators.js";
+import Customer from "../models/Customer.js";
 
 const router = Router();
 
@@ -26,9 +26,29 @@ router.get("/",
     }
 );
 
+router.get("/id/:id", 
+    isLoggedIn,
+    param("id").custom(idValidator).notEmpty(),
+    validateErrorsMidleware,        
+    async (req, res) => {
+        const { connection } = req.app;
+        const id = Number(req.params.id);
+        
+        try {
+            const customers = await Customer.getById(connection, id);
+            
+            res.status(200).send(customers);
+            
+        } catch (error) {
+            sendError(error, res);
+        }
+
+    }
+);
+
 router.post("/", 
     isLoggedIn,
-    body(["name", "surname", "email", "age"], "Missing param").exists().notEmpty(),
+    body(["name", "surname", "email", "age", "show_id"], "Missing param").exists().notEmpty(),
     body(["name", "surname"]).isString(),
     body(["email"]).isEmail(),
     body("age").isFloat(),
