@@ -6,6 +6,7 @@ import {createTables} from "./database/create-tables.js";
 import {getConnection} from "./database/mysql.js";
 import customersRoute from "./routes/customers-route.js";
 import usersRoute from "./routes/users-route.js";
+import showsRoute from "./routes/shows-route.js";
 
 config();
 
@@ -32,6 +33,7 @@ const main = async () => {
 
       app.use("/users", usersRoute);
       app.use("/customers", customersRoute);
+      app.use("/shows", showsRoute);
       
       app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
       

@@ -4,10 +4,10 @@ import { body, param, query } from "express-validator";
 import {validateErrorsMidleware} from "../middleware/validateErrorsMidleware.js";
 import {sendError} from "../utils/error.js";
 import {idValidator} from "../utils/validators.js"
-import Customer from "../models/Customer.js"
+import Show from "../models/Show.js"
 
 const router = Router();
-
+    
 router.get("/", 
     isLoggedIn,
     validateErrorsMidleware,        
@@ -15,9 +15,9 @@ router.get("/",
         const { connection } = req.app;
         
         try {
-            const customers = await Customer.all(connection);
+            const shows = await Show.all(connection);
             
-            res.status(200).send(customers);
+            res.status(200).send(shows);
             
         } catch (error) {
             sendError(error, res);
@@ -28,19 +28,17 @@ router.get("/",
 
 router.post("/", 
     isLoggedIn,
-    body(["name", "surname", "email", "age"], "Missing param").exists().notEmpty(),
-    body(["name", "surname"]).isString(),
-    body(["email"]).isEmail(),
-    body("age").isFloat(),
+    body(["title", "description", "show_date"], "Missing param").exists().notEmpty(),
+    body(["title", "description"]).isString(),
     validateErrorsMidleware,
     async (req, res) => {
         const { connection } = req.app;
-        const {name, surname, email, age, show_id} = req.body;
+        const {title, description, show_date} = req.body;
 
         try {
-            const customer = await Customer.create(connection, {name, surname, email, age, show_id});
+            const show = await Show.create(connection, {title, description, show_date});
 
-            res.status(200).send({customer});
+            res.status(200).send({show});
             
         } catch (error) {
             sendError(error, res);
@@ -50,22 +48,20 @@ router.post("/",
 router.put("/id/:id", 
     isLoggedIn,
     param("id").custom(idValidator).notEmpty(),
-    body(["name", "surname", "email", "age"], "Missing param").exists().notEmpty(),
-    body(["name", "surname"]).isString(),
-    body(["email"]).isEmail(),
-    body("age").isFloat(),
+    body(["title", "description", "show_date"], "Missing param").exists().notEmpty(),
+    body(["title", "description"]).isString(),
     validateErrorsMidleware,
     async (req, res) => {
         const { connection } = req.app;
         const id = Number(req.params.id);
-        const {name, surname, email, age, show_id} = req.body;
+        const {title, description, show_date} = req.body;
 
         try {
-            const affectedRows = await Customer.update(connection, {id, name, surname, email, age, show_id});
+            const affectedRows = await Show.update(connection, {id, title, description, show_date});
             
             if (!affectedRows) {
                 return res.status(400).send({
-                    error: `No customer with id: ${id}`
+                    error: `No show with id: ${id}`
                 });
             }
             
@@ -85,11 +81,11 @@ router.delete("/id/:id",
         const id = Number(req.params.id);
 
         try {
-            const affectedRows = await Customer.delete(connection, id);
+            const affectedRows = await Show.delete(connection, id);
             
             if (!affectedRows) {
                 return res.status(400).send({
-                    error: `No customer with id: ${id}`
+                    error: `No show with id: ${id}`
                 });
             }
 
@@ -99,6 +95,6 @@ router.delete("/id/:id",
             sendError(error, res);
         }
 });
-
     
+
 export default router;

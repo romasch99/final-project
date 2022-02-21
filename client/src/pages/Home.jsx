@@ -54,19 +54,19 @@ export const Home = () => {
         
         console.log('Add customer');
         console.log(model.name, model.surname, model.email, model.age);
-        // if (!model.email || !model.name || !model.surname || !model.age) return;
+        if (!model.email || !model.name || !model.surname || !model.age) return;
 
         const res = await CustomerApi.add(model, token);
-        console.log('Add res:');
-        console.log(res);
-        console.log('Error: ' + res.errors);
+        // console.log('Add res:');
+        // console.log(res);
+        // console.log('Error: ' + res.errors);
         if (res.errors) {
             setError(`${res.errors[0].msg}: ${res.errors[0].param}!`);
             return;
         }
         setError(null);
         const {customer} = res;
-        console.log({customer});
+        // console.log({customer});
         navigate("/", {state: {added: customer}});
     };
     

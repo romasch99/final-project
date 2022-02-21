@@ -1,4 +1,5 @@
 import {tableCustomers} from "../database/create-tables.js";
+import {tableShows} from "../database/create-tables.js"
 
 export default class Customer {
     constructor({id, name, surname, email, age}){
@@ -13,7 +14,8 @@ export default class Customer {
         try {
             
             const query = `
-                SELECT id, name, surname, email, age FROM ${tableCustomers};
+                SELECT c.name, c.surname, c.email, c.age, s.description, DATE_FORMAT(s.show_date, "%Y-%m-%d %H-%i") as date FROM ${tableCustomers} c
+                Left JOIN ${tableShows} s ON c.show_id = s.id;
             `;
             const [data] = await connection.query(query);
             console.log(data);    
@@ -25,24 +27,24 @@ export default class Customer {
         }
     }
     
-    static async create(connection, {name, surname, email, age}) {
+    static async create(connection, {name, surname, email, age, show_id}) {
         try {
-            const query = `INSERT INTO ${tableCustomers} (name, surname, email, age) VALUES (?, ?, ?, ?);`; 
-            const [{insertId}] = await connection.query(query, [name, surname, email, age]);
+            const query = `INSERT INTO ${tableCustomers} (name, surname, email, age, show_id) VALUES (?, ?, ?, ?, ?);`; 
+            const [{insertId}] = await connection.query(query, [name, surname, email, age, show_id]);
             
-            return new Customer({id: insertId, name, surname, email, age});
+            return new Customer({id: insertId, name, surname, email, age, show_id});
         } catch (error) {
             console.log("Couldn't create customer", error);
             throw error;
         }
     }
     
-    static async update(connection, {id, name, surname, email, age}) {
+    static async update(connection, {id, name, surname, email, age, show_id}) {
         
         try {
             
-            const query = `UPDATE ${tableCustomers} SET name = ?, surname = ?, email = ?, age = ? WHERE id = ?;`;
-            const [{affectedRows}] = await connection.query(query, [name, surname, email, age, id]);
+            const query = `UPDATE ${tableCustomers} SET name = ?, surname = ?, email = ?, age = ?, show_id = ? WHERE id = ?;`;
+            const [{affectedRows}] = await connection.query(query, [name, surname, email, age, show_id, id]);
             return !!affectedRows;
             
         } catch (error) {
